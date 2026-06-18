@@ -61,13 +61,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ElementCard from '@/components/ElementCard.vue'
 import { useGardenStore } from '@/stores/garden'
 import { useQuizStore } from '@/stores/quiz'
 
+const route = useRoute()
 const router = useRouter()
 const gardenStore = useGardenStore()
 const quizStore = useQuizStore()
@@ -75,7 +76,6 @@ const { filteredElements, categories, selectedCategory } = storeToRefs(gardenSto
 
 const category = ref(selectedCategory.value)
 
-/** 分类按钮选项 */
 const categoryOptions = computed(() =>
   categories.value.map((cat) => ({ label: cat, value: cat }))
 )
@@ -84,24 +84,27 @@ watch(selectedCategory, (val) => {
   category.value = val
 })
 
-/**
- * 切换分类筛选
- * @param value - 选中的分类
- */
+onMounted(() => {
+  const cat = route.query.category as string | undefined
+  if (cat && categories.value.includes(cat)) {
+    gardenStore.setCategory(cat)
+  }
+})
+
+watch(() => route.query.category, (cat) => {
+  if (cat && categories.value.includes(cat as string)) {
+    gardenStore.setCategory(cat as string)
+  }
+})
+
 function onCategoryChange(value: string): void {
   gardenStore.setCategory(value)
 }
 
-/**
- * 跳转至对照页面
- */
 function goCompare(): void {
   router.push({ name: 'compare' })
 }
 
-/**
- * 跳转至知识测验页面并直接开始答题
- */
 function goQuiz(): void {
   quizStore.startQuiz()
   router.push({ name: 'quiz' })

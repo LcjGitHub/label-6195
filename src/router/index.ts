@@ -4,6 +4,12 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/categories',
+      name: 'category-overview',
+      component: () => import('@/pages/CategoryOverviewPage.vue'),
+      meta: { title: '分类概览' },
+    },
+    {
       path: '/',
       name: 'element-list',
       component: () => import('@/pages/ElementListPage.vue'),

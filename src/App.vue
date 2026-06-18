@@ -48,10 +48,11 @@ const activeTab = ref(
     ? 'gardens'
     : route.name === 'quiz'
     ? 'quiz'
+    : route.name === 'category-overview'
+    ? 'categories'
     : 'elements'
 )
 
-/** 监听路由变化，同步更新标签高亮 */
 watch(
   () => route.name,
   (name) => {
@@ -59,26 +60,26 @@ watch(
       activeTab.value = 'gardens'
     } else if (name === 'quiz') {
       activeTab.value = 'quiz'
+    } else if (name === 'category-overview') {
+      activeTab.value = 'categories'
     } else {
       activeTab.value = 'elements'
     }
   }
 )
 
-/** 标签页选项 */
 const tabOptions = [
   { label: '造园要素', value: 'elements' },
+  { label: '分类概览', value: 'categories' },
   { label: '江南名园', value: 'gardens' },
   { label: '知识测验', value: 'quiz' },
 ]
 
-/**
- * 切换标签页
- * @param value - 选中的标签页
- */
 function onTabChange(value: string): void {
   if (value === 'elements') {
     router.push({ name: 'element-list' })
+  } else if (value === 'categories') {
+    router.push({ name: 'category-overview' })
   } else if (value === 'gardens') {
     router.push({ name: 'garden-list' })
   } else if (value === 'quiz') {
