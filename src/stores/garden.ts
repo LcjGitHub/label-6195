@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import gardenElementsData from '@/mock/garden-elements.json'
-import type { GardenElement } from '@/types/garden'
+import type { GardenElement, RelatedElementItem } from '@/types/garden'
 
 export interface CategoryStat {
   category: string
@@ -66,6 +66,15 @@ export const useGardenStore = defineStore('garden', () => {
     return elements.value.find((el) => el.id === id)
   }
 
+  function getRelatedElements(id: string, limit = 3): RelatedElementItem[] {
+    const current = getElementById(id)
+    if (!current) return []
+    return elements.value
+      .filter((el) => el.id !== id && el.category === current.category)
+      .slice(0, limit)
+      .map((el) => ({ id: el.id, name: el.name, desc: el.desc, category: el.category }))
+  }
+
   function setCategory(category: string): void {
     selectedCategory.value = category
   }
@@ -87,6 +96,7 @@ export const useGardenStore = defineStore('garden', () => {
     filteredElements,
     categoryStats,
     getElementById,
+    getRelatedElements,
     setCategory,
     setSearchKeyword,
     resetFilters,

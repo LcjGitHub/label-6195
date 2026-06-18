@@ -65,6 +65,8 @@
       </q-expansion-item>
     </q-list>
 
+    <RelatedElements :items="relatedItems" />
+
     <div class="q-mt-lg">
       <q-btn
         outline
@@ -94,6 +96,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGardenStore } from '@/stores/garden'
 import { useFavoriteStore } from '@/stores/favorite'
+import RelatedElements from '@/components/RelatedElements.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -110,6 +113,10 @@ const element = computed(() =>
 
 const isFavorited = computed(() =>
   element.value ? favoriteStore.isFavorite(element.value.id) : false
+)
+
+const relatedItems = computed(() =>
+  element.value ? gardenStore.getRelatedElements(element.value.id) : []
 )
 
 function onToggleFavorite(): void {
