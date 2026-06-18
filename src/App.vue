@@ -79,7 +79,7 @@ const tabOptions = [
 
 function onTabChange(value: string): void {
   if (value === 'elements') {
-    gardenStore.setCategory('全部')
+    gardenStore.resetFilters()
     router.push({ name: 'element-list', query: {} })
   } else if (value === 'categories') {
     router.push({ name: 'category-overview' })

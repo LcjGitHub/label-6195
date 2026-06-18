@@ -41,7 +41,6 @@
         placeholder="搜索要素名称或简介…"
         clearable
         class="search-input"
-        @update:model-value="onSearchInput"
       >
         <template v-slot:prepend>
           <q-icon name="search" />
@@ -76,7 +75,7 @@
 
     <div v-else class="flex flex-center q-pa-xl text-grey-6">
       <div class="text-center">
-        <q-icon name="search_off" size="64px" class="q-mb-md" />
+        <q-icon :name="emptyIcon" size="64px" class="q-mb-md" />
         <div class="text-h6">{{ emptyMessage }}</div>
       </div>
     </div>
@@ -128,9 +127,9 @@ function onCategoryChange(value: string): void {
   gardenStore.setCategory(value)
 }
 
-function onSearchInput(value: string | number | null): void {
-  gardenStore.setSearchKeyword((value ?? '').toString())
-}
+const emptyIcon = computed(() =>
+  searchKeyword.value.trim() ? 'search_off' : 'format_list_bulleted'
+)
 
 const emptyMessage = computed(() => {
   if (searchKeyword.value.trim()) {

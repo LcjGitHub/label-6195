@@ -74,6 +74,11 @@ export const useGardenStore = defineStore('garden', () => {
     searchKeyword.value = keyword
   }
 
+  function resetFilters(): void {
+    selectedCategory.value = '全部'
+    searchKeyword.value = ''
+  }
+
   return {
     elements,
     selectedCategory,
@@ -84,5 +89,6 @@ export const useGardenStore = defineStore('garden', () => {
     getElementById,
     setCategory,
     setSearchKeyword,
+    resetFilters,
   }
 })
