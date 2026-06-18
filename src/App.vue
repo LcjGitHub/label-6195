@@ -35,9 +35,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useGardenStore } from '@/stores/garden'
 
 const route = useRoute()
 const router = useRouter()
+const gardenStore = useGardenStore()
 
 /** 详情页显示返回按钮 */
 const showBack = computed(() => route.name === 'element-detail' || route.name === 'garden-detail')
@@ -77,7 +79,8 @@ const tabOptions = [
 
 function onTabChange(value: string): void {
   if (value === 'elements') {
-    router.push({ name: 'element-list' })
+    gardenStore.setCategory('全部')
+    router.push({ name: 'element-list', query: {} })
   } else if (value === 'categories') {
     router.push({ name: 'category-overview' })
   } else if (value === 'gardens') {

@@ -11,6 +11,13 @@
         <q-space />
         <div class="row q-gutter-sm">
           <q-btn
+            label="分类概览"
+            icon="category"
+            outline
+            color="primary"
+            @click="goOverview"
+          />
+          <q-btn
             label="去对照"
             icon="compare_arrows"
             color="primary"
@@ -88,17 +95,25 @@ onMounted(() => {
   const cat = route.query.category as string | undefined
   if (cat && categories.value.includes(cat)) {
     gardenStore.setCategory(cat)
+  } else {
+    gardenStore.setCategory('全部')
   }
 })
 
 watch(() => route.query.category, (cat) => {
   if (cat && categories.value.includes(cat as string)) {
     gardenStore.setCategory(cat as string)
+  } else if (!cat) {
+    gardenStore.setCategory('全部')
   }
 })
 
 function onCategoryChange(value: string): void {
   gardenStore.setCategory(value)
+}
+
+function goOverview(): void {
+  router.push({ name: 'category-overview' })
 }
 
 function goCompare(): void {
