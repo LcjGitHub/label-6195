@@ -20,16 +20,17 @@
           <q-icon name="image" size="48px" />
         </div>
       </template>
-      <q-btn
-        :icon="isFavorited ? 'favorite' : 'favorite_border'"
-        :color="isFavorited ? 'red' : 'white'"
-        round
-        dense
-        size="sm"
-        class="absolute-top-right element-card__favorite-btn"
-        @click.stop="onToggleFavorite"
-      />
     </q-img>
+
+    <q-btn
+      :icon="isFavorited ? 'favorite' : 'favorite_border'"
+      :color="isFavorited ? 'red' : 'white'"
+      round
+      dense
+      size="sm"
+      class="element-card__favorite-btn"
+      @click.stop="onToggleFavorite"
+    />
 
     <q-card-section>
       <div class="row items-center no-wrap q-mb-xs">
@@ -77,6 +78,7 @@ function goDetail(): void {
 
 <style scoped lang="scss">
 .element-card {
+  position: relative;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 
   &:hover {
@@ -89,7 +91,10 @@ function goDetail(): void {
   }
 
   &__favorite-btn {
-    margin: 8px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 }

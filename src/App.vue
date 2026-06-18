@@ -25,20 +25,25 @@
         />
         <q-space />
         <q-btn
-          flat
+          :flat="!isOnFavorites"
+          :unelevated="isOnFavorites"
           round
           dense
           icon="favorite"
+          color="white"
+          :text-color="isOnFavorites ? 'primary' : undefined"
           aria-label="我的收藏"
-          :active="activeTab === 'favorites'"
+          class="app-header__favorite-btn"
           @click="goFavorites"
         >
           <q-badge
             v-if="favoriteCount > 0"
-            :content="favoriteCount"
             color="red"
+            text-color="white"
             floating
-          />
+          >
+            {{ favoriteCount > 99 ? '99+' : favoriteCount }}
+          </q-badge>
         </q-btn>
       </q-toolbar>
     </q-header>
@@ -67,7 +72,10 @@ const favoriteCount = computed(() => favoriteIds.value.length)
 /** 详情页显示返回按钮 */
 const showBack = computed(() => route.name === 'element-detail' || route.name === 'garden-detail')
 
-/** 当前激活的标签页 */
+/** 当前是否在收藏页 */
+const isOnFavorites = computed(() => route.name === 'favorites')
+
+/** 主标签激活状态（不含收藏） */
 const activeTab = ref(
   route.name === 'garden-list' || route.name === 'garden-detail'
     ? 'gardens'
@@ -75,8 +83,6 @@ const activeTab = ref(
     ? 'quiz'
     : route.name === 'category-overview'
     ? 'categories'
-    : route.name === 'favorites'
-    ? 'favorites'
     : 'elements'
 )
 
@@ -89,9 +95,7 @@ watch(
       activeTab.value = 'quiz'
     } else if (name === 'category-overview') {
       activeTab.value = 'categories'
-    } else if (name === 'favorites') {
-      activeTab.value = 'favorites'
-    } else {
+    } else if (name === 'element-list' || name === 'element-detail') {
       activeTab.value = 'elements'
     }
   }

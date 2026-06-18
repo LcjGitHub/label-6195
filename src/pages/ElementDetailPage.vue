@@ -19,24 +19,23 @@
             </div>
           </div>
         </template>
-        <div class="absolute-bottom detail-hero__overlay q-pa-md">
-          <div class="row items-center no-wrap">
-            <div class="text-h4 text-white">{{ element.name }}</div>
-            <q-btn
-              :icon="isFavorited ? 'favorite' : 'favorite_border'"
-              :color="isFavorited ? 'red' : 'white'"
-              round
-              dense
-              size="md"
-              class="q-ml-sm detail-hero__favorite-btn"
-              @click="onToggleFavorite"
-            />
-          </div>
-          <q-chip dense color="white" text-color="primary" class="q-mt-xs">
-            {{ element.category }}
-          </q-chip>
-        </div>
       </q-img>
+
+      <div class="row items-center no-wrap q-mt-md q-mb-xs">
+        <div class="text-h4 text-primary">{{ element.name }}</div>
+        <q-btn
+          :icon="isFavorited ? 'favorite' : 'favorite_border'"
+          :color="isFavorited ? 'red' : 'grey-7'"
+          round
+          dense
+          size="md"
+          class="q-ml-sm detail-hero__favorite-btn"
+          @click="onToggleFavorite"
+        />
+      </div>
+      <q-chip dense color="primary" text-color="white">
+        {{ element.category }}
+      </q-chip>
     </div>
 
     <q-card flat bordered class="q-mb-lg">
@@ -127,12 +126,8 @@ function onToggleFavorite(): void {
     overflow: hidden;
   }
 
-  &__overlay {
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
-  }
-
   &__favorite-btn {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
 }
 </style>
