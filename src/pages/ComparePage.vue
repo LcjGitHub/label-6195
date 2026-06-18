@@ -7,9 +7,9 @@
       </div>
     </div>
 
-    <template v-if="canCompare && leftElement && rightElement">
+    <template v-if="showResult && leftElement && rightElement">
       <div class="row q-col-gutter-md q-mb-lg">
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <div class="element-panel left-panel">
             <div class="panel-header q-mb-sm">
               <q-chip dense color="primary" text-color="white" size="sm">
@@ -18,9 +18,8 @@
             </div>
             <q-img :src="leftElement.image" :ratio="16 / 9" class="panel-img" />
             <div class="q-pa-sm">
-              <div class="row items-center no-wrap q-mb-xs">
-                <div class="text-h5 text-primary">{{ leftElement.name }}</div>
-                <q-space />
+              <div class="row items-center q-mb-xs">
+                <div class="text-h5 text-primary q-mr-sm">{{ leftElement.name }}</div>
                 <q-chip dense color="secondary" text-color="white" size="sm">
                   {{ leftElement.category }}
                 </q-chip>
@@ -32,7 +31,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-sm-6">
           <div class="element-panel right-panel">
             <div class="panel-header q-mb-sm">
               <q-chip dense color="primary" text-color="white" size="sm">
@@ -41,9 +40,8 @@
             </div>
             <q-img :src="rightElement.image" :ratio="16 / 9" class="panel-img" />
             <div class="q-pa-sm">
-              <div class="row items-center no-wrap q-mb-xs">
-                <div class="text-h5 text-primary">{{ rightElement.name }}</div>
-                <q-space />
+              <div class="row items-center q-mb-xs">
+                <div class="text-h5 text-primary q-mr-sm">{{ rightElement.name }}</div>
                 <q-chip dense color="secondary" text-color="white" size="sm">
                   {{ rightElement.category }}
                 </q-chip>
@@ -89,6 +87,7 @@
           hide-bottom
           dense
           class="compare-table"
+          wrap-cells
         >
           <template #header="props">
             <q-tr :props="props">
@@ -96,8 +95,7 @@
                 v-for="col in props.cols"
                 :key="col.name"
                 :props="props"
-                class="table-header"
-                :class="col.align"
+                class="table-header-cell"
               >
                 {{ col.label }}
               </q-th>
@@ -106,7 +104,7 @@
 
           <template #body-cell-title="props">
             <q-td :props="props" class="title-cell">
-              <div class="text-subtitle2 text-primary">
+              <div class="text-subtitle2 text-primary break-words">
                 {{ props.value }}
               </div>
             </q-td>
@@ -115,7 +113,7 @@
           <template #body-cell-leftContent="props">
             <q-td :props="props" class="content-cell left-content">
               <template v-if="props.value">
-                <div class="text-body2 text-grey-8 content-text">
+                <div class="text-body2 text-grey-8 content-text break-words">
                   {{ props.value }}
                 </div>
               </template>
@@ -130,7 +128,7 @@
           <template #body-cell-rightContent="props">
             <q-td :props="props" class="content-cell right-content">
               <template v-if="props.value">
-                <div class="text-body2 text-grey-8 content-text">
+                <div class="text-body2 text-grey-8 content-text break-words">
                   {{ props.value }}
                 </div>
               </template>
@@ -147,14 +145,14 @@
 
     <template v-else>
       <div class="empty-state">
-        <CompareSelector />
+        <CompareSelector @start-compare="onStartCompare" />
       </div>
     </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useCompareStore } from '@/stores/compare'
@@ -163,10 +161,11 @@ import CompareSelector from '@/components/CompareSelector.vue'
 const compareStore = useCompareStore()
 const router = useRouter()
 
+const showResult = ref(false)
+
 const {
   leftElement,
   rightElement,
-  canCompare,
   compareTableRows,
 } = storeToRefs(compareStore)
 
@@ -176,30 +175,34 @@ const columns = computed(() => [
     label: '说明段落',
     field: 'title',
     align: 'left' as const,
-    style: 'width: 20%',
+    style: 'width: 18%; min-width: 100px',
   },
   {
     name: 'leftContent',
     label: leftElement.value?.name ?? '左侧',
     field: 'leftContent',
     align: 'left' as const,
-    style: 'width: 40%',
+    style: 'width: 41%; min-width: 200px',
   },
   {
     name: 'rightContent',
     label: rightElement.value?.name ?? '右侧',
     field: 'rightContent',
     align: 'left' as const,
-    style: 'width: 40%',
+    style: 'width: 41%; min-width: 200px',
   },
 ])
+
+function onStartCompare(): void {
+  showResult.value = true
+}
 
 function onSwap(): void {
   compareStore.swapElements()
 }
 
 function onReSelect(): void {
-  compareStore.clearSelection()
+  showResult.value = false
 }
 
 function onBack(): void {
@@ -246,17 +249,22 @@ function onBack(): void {
   border: 1px solid rgba(46, 125, 111, 0.2);
   border-radius: 8px;
   padding: 16px;
+  overflow-x: auto;
 }
 
 .compare-table {
   :deep(.q-table) {
     border-radius: 8px;
+    table-layout: fixed;
+    width: 100%;
   }
 
-  :deep(.table-header) {
+  :deep(.table-header-cell) {
     background: rgba(46, 125, 111, 0.1);
     font-weight: 600;
     color: #2e7d6f;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   :deep(.title-cell) {
@@ -269,6 +277,8 @@ function onBack(): void {
     vertical-align: top;
     padding: 12px;
     border-right: 1px solid rgba(46, 125, 111, 0.1);
+    word-break: break-word;
+    overflow-wrap: break-word;
 
     &.left-content {
       background: rgba(46, 125, 111, 0.02);
@@ -282,11 +292,23 @@ function onBack(): void {
 
   :deep(.content-text) {
     line-height: 1.7;
+    white-space: normal;
   }
 
   :deep(tr:hover td) {
     background: rgba(46, 125, 111, 0.06) !important;
   }
+
+  :deep(td),
+  :deep(th) {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+.break-words {
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .empty-state {

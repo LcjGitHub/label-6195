@@ -10,7 +10,7 @@
         </div>
         <q-select
           v-model="leftSelected"
-          :options="elementOptions"
+          :options="leftOptions"
           option-label="name"
           option-value="id"
           emit-value
@@ -20,6 +20,7 @@
           filled
           dense
           class="selector-input"
+          @update:model-value="onLeftChange"
         >
           <template #option="scope">
             <div class="row items-center no-wrap">
@@ -42,7 +43,7 @@
         </div>
         <q-select
           v-model="rightSelected"
-          :options="elementOptions"
+          :options="rightOptions"
           option-label="name"
           option-value="id"
           emit-value
@@ -52,6 +53,7 @@
           filled
           dense
           class="selector-input"
+          @update:model-value="onRightChange"
         >
           <template #option="scope">
             <div class="row items-center no-wrap">
@@ -67,6 +69,17 @@
         </q-select>
       </div>
     </div>
+
+    <q-alert
+      v-if="hasSameSelection"
+      class="q-mb-md"
+      type="warning"
+      icon="warning"
+      dense
+      bordered
+    >
+      左右两侧不能选择同一要素，请重新选择
+    </q-alert>
 
     <div class="row q-col-gutter-md q-mb-md">
       <div class="col-6">
@@ -138,7 +151,7 @@
       <q-btn
         label="开始对照"
         icon="compare_arrows"
-        :disable="!canCompare"
+        :disable="!canStartCompare"
         color="primary"
         @click="onCompare"
       />
@@ -149,14 +162,16 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
 import { useGardenStore } from '@/stores/garden'
 import { useCompareStore } from '@/stores/compare'
 import type { GardenElement } from '@/types/garden'
 
+const emit = defineEmits<{
+  (e: 'start-compare'): void
+}>()
+
 const gardenStore = useGardenStore()
 const compareStore = useCompareStore()
-const router = useRouter()
 
 const { elements } = storeToRefs(gardenStore)
 const { leftId, rightId, canCompare } = storeToRefs(compareStore)
@@ -172,7 +187,13 @@ watch(rightId, (val) => {
   rightSelected.value = val
 })
 
-const elementOptions = computed<GardenElement[]>(() => elements.value)
+const leftOptions = computed<GardenElement[]>(() =>
+  elements.value.filter((el) => el.id !== rightSelected.value)
+)
+
+const rightOptions = computed<GardenElement[]>(() =>
+  elements.value.filter((el) => el.id !== leftSelected.value)
+)
 
 const leftElement = computed(() =>
   leftSelected.value ? gardenStore.getElementById(leftSelected.value) : undefined
@@ -184,6 +205,15 @@ const rightElement = computed(() =>
 
 const hasSelection = computed(() => leftSelected.value !== null || rightSelected.value !== null)
 
+const hasSameSelection = computed(
+  () =>
+    leftSelected.value !== null &&
+    rightSelected.value !== null &&
+    leftSelected.value === rightSelected.value
+)
+
+const canStartCompare = computed(() => canCompare.value && !hasSameSelection.value)
+
 watch(leftSelected, (val) => {
   compareStore.setElement('left', val)
 })
@@ -191,6 +221,28 @@ watch(leftSelected, (val) => {
 watch(rightSelected, (val) => {
   compareStore.setElement('right', val)
 })
+
+function onLeftChange(): void {
+  if (
+    leftSelected.value !== null &&
+    rightSelected.value !== null &&
+    leftSelected.value === rightSelected.value
+  ) {
+    rightSelected.value = null
+    compareStore.setElement('right', null)
+  }
+}
+
+function onRightChange(): void {
+  if (
+    leftSelected.value !== null &&
+    rightSelected.value !== null &&
+    leftSelected.value === rightSelected.value
+  ) {
+    leftSelected.value = null
+    compareStore.setElement('left', null)
+  }
+}
 
 function onSwap(): void {
   compareStore.swapElements()
@@ -201,7 +253,7 @@ function onClear(): void {
 }
 
 function onCompare(): void {
-  router.push({ name: 'compare' })
+  emit('start-compare')
 }
 </script>
 
