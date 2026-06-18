@@ -23,6 +23,23 @@
           flat
           @update:model-value="onTabChange"
         />
+        <q-space />
+        <q-btn
+          flat
+          round
+          dense
+          icon="favorite"
+          aria-label="我的收藏"
+          :active="activeTab === 'favorites'"
+          @click="goFavorites"
+        >
+          <q-badge
+            v-if="favoriteCount > 0"
+            :content="favoriteCount"
+            color="red"
+            floating
+          />
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -35,11 +52,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useGardenStore } from '@/stores/garden'
+import { useFavoriteStore } from '@/stores/favorite'
 
 const route = useRoute()
 const router = useRouter()
 const gardenStore = useGardenStore()
+const favoriteStore = useFavoriteStore()
+const { favoriteIds } = storeToRefs(favoriteStore)
+
+const favoriteCount = computed(() => favoriteIds.value.length)
 
 /** 详情页显示返回按钮 */
 const showBack = computed(() => route.name === 'element-detail' || route.name === 'garden-detail')
@@ -52,6 +75,8 @@ const activeTab = ref(
     ? 'quiz'
     : route.name === 'category-overview'
     ? 'categories'
+    : route.name === 'favorites'
+    ? 'favorites'
     : 'elements'
 )
 
@@ -64,6 +89,8 @@ watch(
       activeTab.value = 'quiz'
     } else if (name === 'category-overview') {
       activeTab.value = 'categories'
+    } else if (name === 'favorites') {
+      activeTab.value = 'favorites'
     } else {
       activeTab.value = 'elements'
     }
@@ -88,5 +115,9 @@ function onTabChange(value: string): void {
   } else if (value === 'quiz') {
     router.push({ name: 'quiz' })
   }
+}
+
+function goFavorites(): void {
+  router.push({ name: 'favorites' })
 }
 </script>

@@ -45,6 +45,12 @@ const router = createRouter({
       component: () => import('@/pages/QuizPage.vue'),
       meta: { title: '园林知识小测验' },
     },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: () => import('@/pages/FavoriteListPage.vue'),
+      meta: { title: '我的收藏' },
+    },
   ],
 })
 

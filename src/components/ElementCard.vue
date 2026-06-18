@@ -20,6 +20,15 @@
           <q-icon name="image" size="48px" />
         </div>
       </template>
+      <q-btn
+        :icon="isFavorited ? 'favorite' : 'favorite_border'"
+        :color="isFavorited ? 'red' : 'white'"
+        round
+        dense
+        size="sm"
+        class="absolute-top-right element-card__favorite-btn"
+        @click.stop="onToggleFavorite"
+      />
     </q-img>
 
     <q-card-section>
@@ -42,14 +51,23 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import type { GardenElement } from '@/types/garden'
+import { useFavoriteStore } from '@/stores/favorite'
 
 const props = defineProps<{
   element: GardenElement
 }>()
 
 const router = useRouter()
+const favoriteStore = useFavoriteStore()
+
+const isFavorited = computed(() => favoriteStore.isFavorite(props.element.id))
+
+function onToggleFavorite(): void {
+  favoriteStore.toggleFavorite(props.element.id)
+}
 
 /** 跳转至要素详情页 */
 function goDetail(): void {
@@ -68,6 +86,11 @@ function goDetail(): void {
 
   &__img {
     background: #e8f0ec;
+  }
+
+  &__favorite-btn {
+    margin: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 }
 

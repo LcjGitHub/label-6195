@@ -20,7 +20,18 @@
           </div>
         </template>
         <div class="absolute-bottom detail-hero__overlay q-pa-md">
-          <div class="text-h4 text-white">{{ element.name }}</div>
+          <div class="row items-center no-wrap">
+            <div class="text-h4 text-white">{{ element.name }}</div>
+            <q-btn
+              :icon="isFavorited ? 'favorite' : 'favorite_border'"
+              :color="isFavorited ? 'red' : 'white'"
+              round
+              dense
+              size="md"
+              class="q-ml-sm detail-hero__favorite-btn"
+              @click="onToggleFavorite"
+            />
+          </div>
           <q-chip dense color="white" text-color="primary" class="q-mt-xs">
             {{ element.category }}
           </q-chip>
@@ -83,10 +94,12 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGardenStore } from '@/stores/garden'
+import { useFavoriteStore } from '@/stores/favorite'
 
 const route = useRoute()
 const router = useRouter()
 const gardenStore = useGardenStore()
+const favoriteStore = useFavoriteStore()
 
 /** 折叠面板图标 */
 const sectionIcons = ['menu_book', 'landscape', 'architecture']
@@ -95,6 +108,16 @@ const sectionIcons = ['menu_book', 'landscape', 'architecture']
 const element = computed(() =>
   gardenStore.getElementById(route.params.id as string)
 )
+
+const isFavorited = computed(() =>
+  element.value ? favoriteStore.isFavorite(element.value.id) : false
+)
+
+function onToggleFavorite(): void {
+  if (element.value) {
+    favoriteStore.toggleFavorite(element.value.id)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -106,6 +129,10 @@ const element = computed(() =>
 
   &__overlay {
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.55));
+  }
+
+  &__favorite-btn {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   }
 }
 </style>
