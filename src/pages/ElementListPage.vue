@@ -9,12 +9,20 @@
           </div>
         </div>
         <q-space />
-        <q-btn
-          label="去对照"
-          icon="compare_arrows"
-          color="primary"
-          @click="goCompare"
-        />
+        <div class="row q-gutter-sm">
+          <q-btn
+            label="去对照"
+            icon="compare_arrows"
+            color="primary"
+            @click="goCompare"
+          />
+          <q-btn
+            label="知识测验"
+            icon="school"
+            color="secondary"
+            @click="goQuiz"
+          />
+        </div>
       </div>
     </div>
 
@@ -87,6 +95,13 @@ function onCategoryChange(value: string): void {
  */
 function goCompare(): void {
   router.push({ name: 'compare' })
+}
+
+/**
+ * 跳转至知识测验页面
+ */
+function goQuiz(): void {
+  router.push({ name: 'quiz' })
 }
 </script>
 

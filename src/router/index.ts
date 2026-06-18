@@ -33,6 +33,12 @@ const router = createRouter({
       component: () => import('@/pages/ComparePage.vue'),
       meta: { title: '要素对照' },
     },
+    {
+      path: '/quiz',
+      name: 'quiz',
+      component: () => import('@/pages/QuizPage.vue'),
+      meta: { title: '园林知识小测验' },
+    },
   ],
 })
 

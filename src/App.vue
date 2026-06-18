@@ -43,7 +43,13 @@ const router = useRouter()
 const showBack = computed(() => route.name === 'element-detail' || route.name === 'garden-detail')
 
 /** 当前激活的标签页 */
-const activeTab = ref(route.name === 'garden-list' || route.name === 'garden-detail' ? 'gardens' : 'elements')
+const activeTab = ref(
+  route.name === 'garden-list' || route.name === 'garden-detail'
+    ? 'gardens'
+    : route.name === 'quiz'
+    ? 'quiz'
+    : 'elements'
+)
 
 /** 监听路由变化，同步更新标签高亮 */
 watch(
@@ -51,6 +57,8 @@ watch(
   (name) => {
     if (name === 'garden-list' || name === 'garden-detail') {
       activeTab.value = 'gardens'
+    } else if (name === 'quiz') {
+      activeTab.value = 'quiz'
     } else {
       activeTab.value = 'elements'
     }
@@ -61,6 +69,7 @@ watch(
 const tabOptions = [
   { label: '造园要素', value: 'elements' },
   { label: '江南名园', value: 'gardens' },
+  { label: '知识测验', value: 'quiz' },
 ]
 
 /**
@@ -70,8 +79,10 @@ const tabOptions = [
 function onTabChange(value: string): void {
   if (value === 'elements') {
     router.push({ name: 'element-list' })
-  } else {
+  } else if (value === 'gardens') {
     router.push({ name: 'garden-list' })
+  } else if (value === 'quiz') {
+    router.push({ name: 'quiz' })
   }
 }
 </script>
