@@ -20,6 +20,7 @@ const categorySummaries: Record<string, string> = {
 export const useGardenStore = defineStore('garden', () => {
   const elements = ref<GardenElement[]>(gardenElementsData as GardenElement[])
   const selectedCategory = ref<string>('全部')
+  const searchKeyword = ref<string>('')
 
   const categories = computed(() => {
     const unique = [...new Set(elements.value.map((el) => el.category))]
@@ -27,10 +28,19 @@ export const useGardenStore = defineStore('garden', () => {
   })
 
   const filteredElements = computed(() => {
-    if (selectedCategory.value === '全部') {
-      return elements.value
+    let result = elements.value
+    if (selectedCategory.value !== '全部') {
+      result = result.filter((el) => el.category === selectedCategory.value)
     }
-    return elements.value.filter((el) => el.category === selectedCategory.value)
+    if (searchKeyword.value.trim()) {
+      const keyword = searchKeyword.value.trim().toLowerCase()
+      result = result.filter(
+        (el) =>
+          el.name.toLowerCase().includes(keyword) ||
+          el.desc.toLowerCase().includes(keyword)
+      )
+    }
+    return result
   })
 
   const categoryStats = computed<CategoryStat[]>(() => {
@@ -60,13 +70,19 @@ export const useGardenStore = defineStore('garden', () => {
     selectedCategory.value = category
   }
 
+  function setSearchKeyword(keyword: string): void {
+    searchKeyword.value = keyword
+  }
+
   return {
     elements,
     selectedCategory,
+    searchKeyword,
     categories,
     filteredElements,
     categoryStats,
     getElementById,
     setCategory,
+    setSearchKeyword,
   }
 })

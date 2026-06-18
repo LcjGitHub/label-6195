@@ -34,6 +34,22 @@
     </div>
 
     <div class="q-mb-md">
+      <q-input
+        v-model="searchKeyword"
+        outlined
+        dense
+        placeholder="搜索要素名称或简介…"
+        clearable
+        class="search-input"
+        @update:model-value="onSearchInput"
+      >
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </div>
+
+    <div class="q-mb-md">
       <div class="text-subtitle2 text-grey-8 q-mb-sm">分类筛选</div>
       <q-btn-toggle
         v-model="category"
@@ -61,7 +77,7 @@
     <div v-else class="flex flex-center q-pa-xl text-grey-6">
       <div class="text-center">
         <q-icon name="search_off" size="64px" class="q-mb-md" />
-        <div class="text-h6">暂无该分类下的要素</div>
+        <div class="text-h6">{{ emptyMessage }}</div>
       </div>
     </div>
   </q-page>
@@ -79,7 +95,7 @@ const route = useRoute()
 const router = useRouter()
 const gardenStore = useGardenStore()
 const quizStore = useQuizStore()
-const { filteredElements, categories, selectedCategory } = storeToRefs(gardenStore)
+const { filteredElements, categories, selectedCategory, searchKeyword } = storeToRefs(gardenStore)
 
 const category = ref(selectedCategory.value)
 
@@ -112,6 +128,19 @@ function onCategoryChange(value: string): void {
   gardenStore.setCategory(value)
 }
 
+function onSearchInput(value: string | number | null): void {
+  gardenStore.setSearchKeyword((value ?? '').toString())
+}
+
+const emptyMessage = computed(() => {
+  if (searchKeyword.value.trim()) {
+    return selectedCategory.value === '全部'
+      ? `未找到与"${searchKeyword.value.trim()}"相关的要素`
+      : `"${selectedCategory.value}"分类下未找到与"${searchKeyword.value.trim()}"相关的要素`
+  }
+  return '暂无该分类下的要素'
+})
+
 function goOverview(): void {
   router.push({ name: 'category-overview' })
 }
@@ -136,5 +165,9 @@ function goQuiz(): void {
   border: 1px solid rgba(46, 125, 111, 0.3);
   border-radius: 8px;
   overflow: hidden;
+}
+
+.search-input {
+  max-width: 400px;
 }
 </style>
