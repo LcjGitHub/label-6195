@@ -1,25 +1,27 @@
 <template>
   <div v-if="items.length" class="related-elements q-mt-lg">
     <div class="text-subtitle1 text-primary q-mb-sm">相关要素推荐</div>
-    <div class="row q-col-gutter-sm no-wrap related-elements__scroll">
+    <div class="related-elements__scroll no-wrap" role="list">
       <div
         v-for="item in items"
         :key="item.id"
-        class="col-4 col-sm-3 col-md-3"
+        role="listitem"
+        class="related-elements__item"
       >
-        <q-card
-          flat
-          bordered
+        <div
+          tabindex="0"
+          role="link"
+          :aria-label="`查看${item.name}详情，${item.desc}`"
           class="related-elements__card cursor-pointer"
           @click="goDetail(item.id)"
+          @keydown.enter="goDetail(item.id)"
+          @keydown.space.prevent="goDetail(item.id)"
         >
-          <q-card-section class="q-pa-sm">
-            <div class="text-subtitle2 text-primary ellipsis">{{ item.name }}</div>
-            <div class="text-caption text-grey-7 ellipsis-2-lines q-mt-xs">
-              {{ item.desc }}
-            </div>
-          </q-card-section>
-        </q-card>
+          <div class="text-subtitle2 text-primary ellipsis">{{ item.name }}</div>
+          <div class="text-caption text-grey-7 ellipsis-2-lines q-mt-xs">
+            {{ item.desc }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -43,17 +45,31 @@ function goDetail(id: string): void {
 <style scoped lang="scss">
 .related-elements {
   &__scroll {
+    display: flex;
+    gap: 12px;
     overflow-x: auto;
-    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  &__item {
+    flex: 0 0 auto;
   }
 
   &__card {
-    min-width: 160px;
+    min-width: 180px;
+    max-width: 220px;
+    padding: 12px;
+    border: 1px solid var(--q-color-grey-3);
+    border-radius: 8px;
+    background: #fff;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       box-shadow: 0 4px 16px rgba(46, 125, 111, 0.18);
       transform: translateY(-2px);
+      outline: 2px solid var(--q-color-primary);
+      outline-offset: 2px;
     }
   }
 }

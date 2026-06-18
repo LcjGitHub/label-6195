@@ -22,8 +22,19 @@ export interface GardenElement {
   sections: GardenElementSection[]
 }
 
-/** 相关要素推荐项（GardenElement 的精简视图，用于推荐卡片） */
-export type RelatedElementItem = Pick<GardenElement, 'id' | 'name' | 'desc' | 'category'>
+/**
+ * 相关要素推荐项（GardenElement 的精简视图，用于推荐卡片）
+ * - id: 要素唯一编号，用于路由跳转与身份识别
+ * - name: 要素名称，作为推荐卡片标题展示
+ * - desc: 要素简介，在卡片中以两行截断形式呈现
+ * - category: 要素所属分类，与当前查看要素属于同一分类
+ */
+export interface RelatedElementItem {
+  id: string
+  name: string
+  desc: string
+  category: string
+}
 
 /** 分类选项 */
 export type GardenCategory = '全部' | string
