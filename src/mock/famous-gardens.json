@@ -1,0 +1,66 @@
+[
+  {
+    "id": "huo-zheng-yuan",
+    "name": "拙政园",
+    "city": "苏州",
+    "description": "拙政园是江南园林的代表作，始建于明代正德年间，以水景为主，园地宽广，山水萦绕，厅榭精美，花木繁茂，具有浓郁的江南水乡特色。园中山水萦绕、厅榭精美，是中国四大名园之一。",
+    "techniqueIds": ["jie-jing", "dui-jing", "ge-jing", "ying-shui", "dian-jing"],
+    "image": "/images/garden-zhuo-zheng-yuan.svg"
+  },
+  {
+    "id": "liu-yuan",
+    "name": "留园",
+    "city": "苏州",
+    "description": "留园以建筑艺术著称，园内建筑布置精巧，奇石众多，尤以冠云峰为最。全园分为中、东、西、北四部分，以曲廊相连，步移景异，有『不出城郭而获山林之趣』的美誉。",
+    "techniqueIds": ["zhang-jing", "jia-jing", "lou-jing", "kuang-jing", "pei-jing"],
+    "image": "/images/garden-liu-yuan.svg"
+  },
+  {
+    "id": "wang-shi-yuan",
+    "name": "网师园",
+    "city": "苏州",
+    "description": "网师园是苏州园林中最小的一座，以小见大，布局精巧。园名寓意『渔隐』，主题突出，全园结构紧凑，建筑虽多而不觉其密，山池虽小而不觉其小，被誉为『小园极则』。",
+    "techniqueIds": ["dui-jing", "kuang-jing", "ying-shui", "dian-jing", "pei-jing"],
+    "image": "/images/garden-wang-shi-yuan.svg"
+  },
+  {
+    "id": "shi-zi-lin",
+    "name": "狮子林",
+    "city": "苏州",
+    "description": "狮子林以假山群著称，园内石峰林立，状如狮子，故名。假山群洞壑曲折盘绕，有『桃源十八景』之称。园内既有苏州古典园林的亭、台、楼、阁，又有皇家园林的宏大气派。",
+    "techniqueIds": ["jia-jing", "tian-jing", "pu-jing", "ge-jing", "dian-jing"],
+    "image": "/images/garden-shi-zi-lin.svg"
+  },
+  {
+    "id": "cang-lang-ting",
+    "name": "沧浪亭",
+    "city": "苏州",
+    "description": "沧浪亭是苏州现存最古老的园林，始建于北宋。园外清流萦绕，园内古木参天，竹影婆娑，堂轩简朴，倒影如画。以『崇阜广水』为特色，未入园林先成景。",
+    "techniqueIds": ["jie-jing", "lou-jing", "ge-jing", "tian-jing", "pei-jing"],
+    "image": "/images/garden-cang-lang-ting.svg"
+  },
+  {
+    "id": "ou-yuan",
+    "name": "耦园",
+    "city": "苏州",
+    "description": "耦园寓意『夫妇归田隐居』，是苏州园林中最富浪漫色彩的一座。全园以『偶』为主题，布局对称，东花园和西花园相对，处处体现成双成对的造园思想。",
+    "techniqueIds": ["dui-jing", "qu-shui", "kuang-jing", "ying-shui", "dian-jing"],
+    "image": "/images/garden-ou-yuan.svg"
+  },
+  {
+    "id": "ge-yuan",
+    "name": "个园",
+    "city": "扬州",
+    "description": "个园以竹石取胜，园名取自『竹』字的半边，园内遍植竹子，并以叠石艺术著名，用不同石料堆叠成『春、夏、秋、冬』四季假山，号称『四季假山』，为国内孤例。",
+    "techniqueIds": ["dian-jing", "pei-jing", "zhang-jing", "jia-jing", "tian-jing"],
+    "image": "/images/garden-ge-yuan.svg"
+  },
+  {
+    "id": "ji-chang-yuan",
+    "name": "寄畅园",
+    "city": "无锡",
+    "description": "寄畅园位于惠山脚下，借景于锡山龙光塔，是江南园林借景手法的典范。园内以山池为中心，古木参天，浓荫蔽日，池水清澈，倒影如画，康熙、乾隆二帝曾多次临幸。",
+    "techniqueIds": ["jie-jing", "ying-shui", "ge-jing", "qu-shui", "lou-jing"],
+    "image": "/images/garden-ji-chang-yuan.svg"
+  }
+]

@@ -16,3 +16,13 @@ export interface GardenElement {
 
 /** 分类选项 */
 export type GardenCategory = '全部' | string
+
+/** 江南名园 */
+export interface FamousGarden {
+  id: string
+  name: string
+  city: string
+  description: string
+  techniqueIds: string[]
+  image: string
+}

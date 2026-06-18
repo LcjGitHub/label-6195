@@ -15,6 +15,18 @@ const router = createRouter({
       component: () => import('@/pages/ElementDetailPage.vue'),
       meta: { title: '要素详情' },
     },
+    {
+      path: '/gardens',
+      name: 'garden-list',
+      component: () => import('@/pages/GardenListPage.vue'),
+      meta: { title: '江南名园列表' },
+    },
+    {
+      path: '/garden/:id',
+      name: 'garden-detail',
+      component: () => import('@/pages/GardenDetailPage.vue'),
+      meta: { title: '名园详情' },
+    },
   ],
 })
 
