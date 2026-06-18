@@ -74,11 +74,10 @@
               @click="quizStore.selectAnswer(option.id)"
             >
               <q-item-section avatar>
-                <q-checkbox
-                  :model-value="quizStore.currentSelectedId === option.id"
+                <q-radio
+                  :model-value="quizStore.currentSelectedId"
                   :val="option.id"
                   size="md"
-                  disable
                 />
               </q-item-section>
               <q-item-section>

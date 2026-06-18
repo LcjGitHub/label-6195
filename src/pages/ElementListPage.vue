@@ -17,7 +17,7 @@
             @click="goCompare"
           />
           <q-btn
-            label="知识测验"
+            label="开始测验"
             icon="school"
             color="secondary"
             @click="goQuiz"
@@ -66,9 +66,11 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import ElementCard from '@/components/ElementCard.vue'
 import { useGardenStore } from '@/stores/garden'
+import { useQuizStore } from '@/stores/quiz'
 
 const router = useRouter()
 const gardenStore = useGardenStore()
+const quizStore = useQuizStore()
 const { filteredElements, categories, selectedCategory } = storeToRefs(gardenStore)
 
 const category = ref(selectedCategory.value)
@@ -98,9 +100,10 @@ function goCompare(): void {
 }
 
 /**
- * 跳转至知识测验页面
+ * 跳转至知识测验页面并直接开始答题
  */
 function goQuiz(): void {
+  quizStore.startQuiz()
   router.push({ name: 'quiz' })
 }
 </script>
