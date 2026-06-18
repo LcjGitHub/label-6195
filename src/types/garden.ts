@@ -26,3 +26,19 @@ export interface FamousGarden {
   techniqueIds: string[]
   image: string
 }
+
+/** 对照选中项 */
+export type CompareSlot = 'left' | 'right'
+
+/** 对照状态 */
+export interface CompareState {
+  leftId: string | null
+  rightId: string | null
+}
+
+/** 对比表格行 */
+export interface CompareTableRow {
+  title: string
+  leftContent: string | null
+  rightContent: string | null
+}

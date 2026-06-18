@@ -27,6 +27,12 @@ const router = createRouter({
       component: () => import('@/pages/GardenDetailPage.vue'),
       meta: { title: '名园详情' },
     },
+    {
+      path: '/compare',
+      name: 'compare',
+      component: () => import('@/pages/ComparePage.vue'),
+      meta: { title: '要素对照' },
+    },
   ],
 })
 

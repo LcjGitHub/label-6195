@@ -1,9 +1,20 @@
 <template>
   <q-page class="q-pa-md">
     <div class="page-header q-mb-lg">
-      <div class="text-h5 text-primary q-mb-xs">造园要素一览</div>
-      <div class="text-body2 text-grey-7">
-        借景、对景、框景……探索江南古典园林的空间造境手法
+      <div class="row items-start no-wrap">
+        <div>
+          <div class="text-h5 text-primary q-mb-xs">造园要素一览</div>
+          <div class="text-body2 text-grey-7">
+            借景、对景、框景……探索江南古典园林的空间造境手法
+          </div>
+        </div>
+        <q-space />
+        <q-btn
+          label="去对照"
+          icon="compare_arrows"
+          color="primary"
+          @click="goCompare"
+        />
       </div>
     </div>
 
@@ -44,9 +55,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 import ElementCard from '@/components/ElementCard.vue'
 import { useGardenStore } from '@/stores/garden'
 
+const router = useRouter()
 const gardenStore = useGardenStore()
 const { filteredElements, categories, selectedCategory } = storeToRefs(gardenStore)
 
@@ -67,6 +80,13 @@ watch(selectedCategory, (val) => {
  */
 function onCategoryChange(value: string): void {
   gardenStore.setCategory(value)
+}
+
+/**
+ * 跳转至对照页面
+ */
+function goCompare(): void {
+  router.push({ name: 'compare' })
 }
 </script>
 
