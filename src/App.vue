@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -44,6 +44,18 @@ const showBack = computed(() => route.name === 'element-detail' || route.name ==
 
 /** 当前激活的标签页 */
 const activeTab = ref(route.name === 'garden-list' || route.name === 'garden-detail' ? 'gardens' : 'elements')
+
+/** 监听路由变化，同步更新标签高亮 */
+watch(
+  () => route.name,
+  (name) => {
+    if (name === 'garden-list' || name === 'garden-detail') {
+      activeTab.value = 'gardens'
+    } else {
+      activeTab.value = 'elements'
+    }
+  }
+)
 
 /** 标签页选项 */
 const tabOptions = [
