@@ -1,0 +1,1 @@
+{"root":["./src/env.d.ts","./src/main.ts","./src/router/index.ts","./src/stores/garden.ts","./src/types/garden.ts","./src/app.vue","./src/components/elementcard.vue","./src/pages/elementdetailpage.vue","./src/pages/elementlistpage.vue"],"version":"5.7.3"}
